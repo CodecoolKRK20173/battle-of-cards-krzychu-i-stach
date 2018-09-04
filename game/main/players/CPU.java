@@ -1,5 +1,8 @@
 package main.players;
 
+import java.util.Random;
+import main.cards.*;
+
 public class CPU extends Player {
 
     private Hand hand;
@@ -16,5 +19,25 @@ public class CPU extends Player {
 
     public Hand getHand() {
         return hand;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int choseParameter(Card topCard) {
+        int[] cardParametersValues = topCard.getCardParameters();
+        int highestValue = 0;
+        int highestParameterIndex = 0;
+        int parameterIndex = 0;
+        
+        for (int parameterValue : cardParametersValues) {
+            if (parameterValue > highestValue) {
+                highestValue = parameterValue;
+                highestParameterIndex = parameterIndex;
+                parameterIndex++;
+            }
+        }
+        return highestParameterIndex;
     }
 }   

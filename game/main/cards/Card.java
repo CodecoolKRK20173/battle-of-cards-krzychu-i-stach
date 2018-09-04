@@ -36,8 +36,29 @@ public class Card {
         return this.fourthParameter;
     }
 
+    public int getParameter(int index) {
+        switch (index) {
+            case 1:
+                return topCard.getFirstParameter();
+                break;
+            case 2:
+                return topCard.getSecondParameter();
+                break;
+            case 3:
+                return topCard.getThirdParameter();
+                break;
+            case 4:
+                return topCard.getFourthParameter();
+        }
+    }
+
     public String getName() {
         return this.name;
+    }
+
+    public int[] getCardParameters() {
+        int[] getCardParameters = {firstParameter, secondParameter, thirdParameter, fourthParameter};
+        return getCardParameters;
     }
 
 

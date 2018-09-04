@@ -11,7 +11,6 @@ public class Deck {
         shuffle();
     }
 
-
     private List<Card> createCardsDeck() {
         List<Card> cards = new ArrayList<Card>();
         for (CardType type : CardType.values()) {
@@ -22,18 +21,15 @@ public class Deck {
         return cards;
     }
 
-
     public List<Card> getDeck() {
         return this.listOfCards;
     }
-
 
     public Card pickCard() {
         Card temp = this.listOfCards.get(0);
         this.listOfCards.remove(0);
         return temp;
        }
-
 
     private void shuffle() {
         ArrayList<Integer> listOfIndex = createListOfRandomIndex();
@@ -44,7 +40,6 @@ public class Deck {
         this.listOfCards.clear();
         this.listOfCards = shuffleDeck;
     }
-
 
     private ArrayList<Integer> createListOfRandomIndex() {
         ArrayList<Integer> listOfIndex = new ArrayList<Integer>();
