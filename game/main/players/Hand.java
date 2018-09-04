@@ -11,8 +11,12 @@ public class Hand {
         this.cardsInHand = new ArrayList<Card>();
     }
 
-    public List<Card> getHandontent() {
+    public List<Card> getHandContent() {
         return this.cardsInHand;
+    }
+
+    public Card getFirstCard() {
+        return this.cardsInHand.get(0);
     }
 
 }

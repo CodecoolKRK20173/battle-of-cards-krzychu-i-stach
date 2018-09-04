@@ -4,6 +4,7 @@ import java.util.*;
 import main.players.*;
 import main.cards.*;
 
+
 public class TableController {
     
     private List<Player> listOfPlayers = new ArrayList<Player>();
@@ -24,19 +25,31 @@ public class TableController {
         
         // cards printing
         
-        int num = 0;
-        for (Player player : this.listOfPlayers) {
-            num ++;
-            for (Card card : player.getHand().getHandontent()){
-                System.out.println("karta playera :" + num);
-                System.out.println(card.getFirstParameter());
-                System.out.println(card.getSecondParameter());
-                System.out.println(card.getThirdParameter());
-                System.out.println(card.getFourthParameter());
-            }
-        }
+        // int num = 0;
+        // for (Player player : this.listOfPlayers) {
+        //     num ++;
+        //     for (Card card : player.hand.getHandContent()){
+        //         System.out.println("karta playera :" + num);
+        //         System.out.println(card.getFirstParameter());
+        //         System.out.println(card.getSecondParameter());
+        //         System.out.println(card.getThirdParameter());
+        //         System.out.println(card.getFourthParameter());
+        //     }
+        // }
 
         /// dealed car printing
+
+        ComparatorOfCards comparator = new ComparatorOfCards();
+
+        List<Card> listOfWinnerCard = comparator.getWinnerCardsList(this.listOfPlayers.get(0).hand.getFirstCard(),
+        this.listOfPlayers.get(1).hand.getFirstCard(),this.listOfPlayers.get(2).hand.getFirstCard()); 
+        
+        for (Card card : listOfWinnerCard) {
+            System.out.println(card);
+        }
+        
+        /// try to implement comparator
+
 
     }
 
@@ -49,7 +62,7 @@ public class TableController {
     private void dealCards() {
         while (deckIsNotEmpty(this.deck)) {
             for (int i = 0; i < listOfPlayers.size(); i++) {
-                listOfPlayers.get(i).getHand().getHandontent().add(this.deck.pickCard());
+                listOfPlayers.get(i).hand.getHandContent().add(this.deck.pickCard());
             }
         }
         
