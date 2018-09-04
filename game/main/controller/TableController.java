@@ -27,7 +27,7 @@ public class TableController {
         int num = 0;
         for (Player player : this.listOfPlayers) {
             num ++;
-            for (Card card : player.hand.getHandontent()){
+            for (Card card : player.getHand().getHandontent()){
                 System.out.println("karta playera :" + num);
                 System.out.println(card.getFirstParameter());
                 System.out.println(card.getSecondParameter());
@@ -49,7 +49,7 @@ public class TableController {
     private void dealCards() {
         while (deckIsNotEmpty(this.deck)) {
             for (int i = 0; i < listOfPlayers.size(); i++) {
-                listOfPlayers.get(i).hand.getHandontent().add(this.deck.pickCard());
+                listOfPlayers.get(i).getHand().getHandontent().add(this.deck.pickCard());
             }
         }
         

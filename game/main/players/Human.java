@@ -1,13 +1,11 @@
 package main.players;
 
-public class CPU extends Player {
-
+public class Human extends Player {
+    
     private Hand hand;
     private String name;
 
-    public CPU() {}
-
-    public CPU(String name) {
+    public Human(String name) {
         this.name = name;
         this.hand = new Hand();
     }
@@ -15,4 +13,5 @@ public class CPU extends Player {
     public Hand getHand() {
         return hand;
     }
-}   
+
+}
