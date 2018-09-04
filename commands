@@ -1,0 +1,7 @@
+// Compile:
+
+find game/main -name "*.java" > production.txt && mkdir -p out/production && javac @production.txt -d out/production
+
+// Run:
+
+java -cp out/production/ main.Application
