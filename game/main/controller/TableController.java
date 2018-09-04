@@ -41,8 +41,8 @@ public class TableController {
 
         ComparatorOfCards comparator = new ComparatorOfCards();
 
-        List<Card> listOfWinnerCard = comparator.getWinnerCardsList(this.listOfPlayers.get(0).hand.getFirstCard(),
-        this.listOfPlayers.get(1).hand.getFirstCard(),this.listOfPlayers.get(2).hand.getFirstCard()); 
+        List<Card> listOfWinnerCard = comparator.getWinnerCardsList(this.listOfPlayers.get(0).getHand().getFirstCard(),
+        this.listOfPlayers.get(1).getHand().getFirstCard(),this.listOfPlayers.get(2).getHand().getFirstCard()); 
         
         for (Card card : listOfWinnerCard) {
             System.out.println(card);
@@ -62,7 +62,7 @@ public class TableController {
     private void dealCards() {
         while (deckIsNotEmpty(this.deck)) {
             for (int i = 0; i < listOfPlayers.size(); i++) {
-                listOfPlayers.get(i).hand.getHandContent().add(this.deck.pickCard());
+                listOfPlayers.get(i).getHand().getHandContent().add(this.deck.pickCard());
             }
         }
         

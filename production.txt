@@ -1,11 +1,7 @@
-<<<<<<< Updated upstream
-game/main/players/Hand.java
-game/main/players/Human.java
-=======
 game/main/controller/TableController.java
->>>>>>> Stashed changes
 game/main/players/Player.java
 game/main/players/Hand.java
+game/main/players/Human.java
 game/main/players/CPU.java
 game/main/Application.java
 game/main/cards/Deck.java

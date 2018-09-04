@@ -25,7 +25,7 @@ public class CPU extends Player {
         return name;
     }
 
-    public int choseParameter(Card topCard) {
+    public int chooseParameter(Card topCard) {
         int[] cardParametersValues = topCard.getCardParameters();
         int highestValue = 0;
         int highestParameterIndex = 0;

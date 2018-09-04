@@ -46,17 +46,18 @@ public class Card implements Comparable {
     public int getParameter(int index) {
         switch (index) {
             case 1:
-                return topCard.getFirstParameter();
-                break;
+                return this.getFirstParameter();
+                
             case 2:
-                return topCard.getSecondParameter();
-                break;
+                return this.getSecondParameter();
+                
             case 3:
-                return topCard.getThirdParameter();
-                break;
+                return this.getThirdParameter();
+                
             case 4:
-                return topCard.getFourthParameter();
+                return this.getFourthParameter();
         }
+        return -1;
     }
 
     public String getName() {

@@ -1,5 +1,7 @@
 package main.players;
 
+import main.cards.*;
+
 public abstract class Player {
 
     public abstract Hand getHand();

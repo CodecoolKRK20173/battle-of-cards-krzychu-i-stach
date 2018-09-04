@@ -22,9 +22,9 @@ public class Human extends Player {
         return name;
     }
 
-    public int choseParameter(Card topCard) {
+    public int chooseParameter(Card topCard) {
         boolean choosingParameter = true;
-        Scanner scanner = new Scanner();
+        Scanner scanner = new Scanner(System.in);
         int userOption = 0;
         
         while (choosingParameter) {
@@ -38,7 +38,7 @@ public class Human extends Player {
                 scanner.nextLine();
                 continue;
             }
-            return userOption;
-        }     
+        }  
+        return userOption;   
     }
 }
