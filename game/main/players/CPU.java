@@ -5,7 +5,9 @@ public class CPU extends Player {
     private Hand hand;
     private String name;
 
-    public CPU() {}
+    public CPU() {
+        this.hand = new Hand();
+    }
 
     public CPU(String name) {
         this.name = name;
