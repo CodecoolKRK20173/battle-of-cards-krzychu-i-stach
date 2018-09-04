@@ -10,11 +10,13 @@ public class CPU extends Player {
 
     public CPU() {
         this.hand = new Hand();
+        this.trumper = false;
     }
 
     public CPU(String name) {
         this.name = name;
         this.hand = new Hand();
+        this.trumper = false;
     }
 
     public Hand getHand() {
@@ -39,5 +41,13 @@ public class CPU extends Player {
             }
         }
         return highestParameterIndex;
+    }
+
+    public void setTrumperOnTrue() {
+        this.trumper = true;
+    }
+
+    public boolean getTrumper() {
+        return this.trumper;
     }
 }   

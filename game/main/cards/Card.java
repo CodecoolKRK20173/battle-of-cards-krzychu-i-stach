@@ -9,21 +9,15 @@ public class Card implements Comparable {
     private int thirdParameter;
     private int fourthParameter;
     private String name;
-    // private int[] arrayOfParameter;
     private int trump;
 
     Card(CardType type) {
         Random rand = new Random();
         this.name = type.name;
-        // arrayOfParameter = new int[4];
        this.firstParameter = rand.nextInt(4) + type.parameteresFactor[0];
-    //    this.arrayOfParameter[0] = firstParameter;
        this.secondParameter = rand.nextInt(4) + type.parameteresFactor[1];
-    //    this.arrayOfParameter[1] = secondParameter;
        this.thirdParameter = rand.nextInt(4) + type.parameteresFactor[2];
-    //    this.arrayOfParameter[2] = thirdParameter;
        this.fourthParameter = rand.nextInt(4) + type.parameteresFactor[3];
-    //    this.arrayOfParameter[3] = fourthParameter;
         
     }
 
@@ -44,6 +38,7 @@ public class Card implements Comparable {
     }
 
     public int getParameter(int index) {
+        index++;
         switch (index) {
             case 1:
                 return this.getFirstParameter();

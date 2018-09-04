@@ -9,11 +9,16 @@ public class TableController {
     
     private List<Player> listOfPlayers = new ArrayList<Player>();
     private Deck deck;
+
+    private int kindOfTrump;
+    private Card[] cardInGame;
+    private List<Card> listOfWinnerCards;
   
     
     public void game() {
         this.deck = new Deck();
         createPlayers(4);
+        this.cardInGame = new Card[4];
         dealCards();
         // for (int i = 0; i < deck.getDeck().size(); i++ ){
         //     System.out.println(deck.getDeck().get(i).getName());
@@ -28,7 +33,7 @@ public class TableController {
         // int num = 0;
         // for (Player player : this.listOfPlayers) {
         //     num ++;
-        //     for (Card card : player.hand.getHandContent()){
+        //     for (Card card : player.getHand().getHandContent()){
         //         System.out.println("karta playera :" + num);
         //         System.out.println(card.getFirstParameter());
         //         System.out.println(card.getSecondParameter());
@@ -39,17 +44,31 @@ public class TableController {
 
         /// dealed car printing
 
+       
+        
+        
+        
         ComparatorOfCards comparator = new ComparatorOfCards();
-
-        List<Card> listOfWinnerCard = comparator.getWinnerCardsList(this.listOfPlayers.get(0).getHand().getFirstCard(),
-        this.listOfPlayers.get(1).getHand().getFirstCard(),this.listOfPlayers.get(2).getHand().getFirstCard()); 
+        setTrumper(1);
+        turn(comparator);
         
-        for (Card card : listOfWinnerCard) {
-            System.out.println(card);
+        for (Card card : this.listOfWinnerCards) {
+            System.out.println(card.getName());
         }
-        
-        /// try to implement comparator
 
+        //try to impement turn
+
+        int num = 0;
+        for (Player player : this.listOfPlayers) {
+                num ++;
+                System.out.println("karta playera :" + num);
+                System.out.println(player.getHand().getFirstCard().getTrump() + " traf sila");
+            
+
+                }
+            
+        /// print first card of all players
+        
 
     }
 
@@ -64,8 +83,7 @@ public class TableController {
             for (int i = 0; i < listOfPlayers.size(); i++) {
                 listOfPlayers.get(i).getHand().getHandContent().add(this.deck.pickCard());
             }
-        }
-        
+        }    
     } 
 
     private boolean deckIsNotEmpty(Deck deck) {
@@ -74,6 +92,45 @@ public class TableController {
         }
         else 
             return false;
+    }
+
+    private void turn(ComparatorOfCards comparator) {
+        setKindOfTrump();
+        setArrayOfCardsToCompare();
+        this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardInGame);
+
+
+    }
+
+    private void setTrumper(int numOfPlayer) {
+        this.listOfPlayers.get(numOfPlayer - 1).setTrumperOnTrue();
+    }
+
+    private void setKindOfTrump() {
+        for (Player player : this.listOfPlayers) {
+            if (player.getTrumper()) {
+                Card topCard = player.getHand().getFirstCard();
+                this.kindOfTrump = player.chooseParameter(topCard);
+                this.cardInGame[0] = topCard;
+            }
+        }
+    }
+
+    private void setArrayOfCardsToCompare() {
+        int indexOfCardInGame = 1;
+        for (Player player : listOfPlayers) {
+            if (!player.getTrumper()) {
+                this.cardInGame[indexOfCardInGame] = player.getHand().getFirstCard();
+                indexOfCardInGame ++;
+            }
+        }
+        setTrumpInCards();
+    }
+
+    private void setTrumpInCards() {
+        for (Card card : cardInGame) {
+            card.setTrump(card.getParameter(this.kindOfTrump));
+        }
     }
 }
 

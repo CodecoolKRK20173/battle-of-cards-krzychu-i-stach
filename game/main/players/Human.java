@@ -12,6 +12,7 @@ public class Human extends Player {
     public Human(String name) {
         this.name = name;
         this.hand = new Hand();
+        this.trumper = false;
     }
 
     public Hand getHand() {
@@ -40,5 +41,13 @@ public class Human extends Player {
             }
         }  
         return userOption;   
+    }
+
+    public void setTrumperOnTrue() {
+        this.trumper = true;
+    }
+
+    public boolean getTrumper() {
+        return this.trumper;
     }
 }
