@@ -1,4 +1,5 @@
 game/main/controller/TableController.java
+game/main/View.java
 game/main/players/Player.java
 game/main/players/Hand.java
 game/main/players/Human.java

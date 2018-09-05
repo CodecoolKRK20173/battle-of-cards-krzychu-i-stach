@@ -1,6 +1,9 @@
 package main.cards;
 
 import java.util.Random;
+import java.util.Set;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Card implements Comparable<Card> {
 
@@ -10,15 +13,20 @@ public class Card implements Comparable<Card> {
     private int fourthParameter;
     private String name;
     private int trump;
+    public Map<String,Integer> cardParameters;
 
     Card(CardType type) {
         Random rand = new Random();
         this.name = type.name;
-       this.firstParameter = rand.nextInt(4) + type.parameteresFactor[0];
-       this.secondParameter = rand.nextInt(4) + type.parameteresFactor[1];
-       this.thirdParameter = rand.nextInt(4) + type.parameteresFactor[2];
-       this.fourthParameter = rand.nextInt(4) + type.parameteresFactor[3];
-        
+        this.firstParameter = rand.nextInt(4) + type.parameteresFactor[0];
+        this.secondParameter = rand.nextInt(4) + type.parameteresFactor[1];
+        this.thirdParameter = rand.nextInt(4) + type.parameteresFactor[2];
+        this.fourthParameter = rand.nextInt(4) + type.parameteresFactor[3];
+        this.cardParameters = new HashMap<>();
+        this.cardParameters.put("First Parameter", firstParameter);
+        this.cardParameters.put("Second Parameter", secondParameter);
+        this.cardParameters.put("Third Parameter", thirdParameter);
+        this.cardParameters.put("Forth Parameter", fourthParameter);
     }
 
     public int getFirstParameter() {
@@ -59,9 +67,17 @@ public class Card implements Comparable<Card> {
         return this.name;
     }
 
-    public int[] getCardParameters() {
-        int[] getCardParameters = {firstParameter, secondParameter, thirdParameter, fourthParameter};
-        return getCardParameters;
+    public Map<String,Integer> getCardParametersAndValues() {
+        return cardParameters;
+    }
+    
+    public Set<String> getCardParameters() {
+        return cardParameters.keySet();
+    }
+
+    public int[] getCardParametersValues() {
+        int[] parameteresValues = {getFirstParameter(), getSecondParameter(), getThirdParameter(), getFourthParameter()};
+        return parameteresValues;
     }
 
     public int compareTo(Card otherCard) {
@@ -75,5 +91,4 @@ public class Card implements Comparable<Card> {
     public void setTrump(int trumpParameter) {
         this.trump = trumpParameter;
     }
-
 }

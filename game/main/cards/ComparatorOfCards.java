@@ -1,12 +1,7 @@
 package main.cards;
 
-
 import main.cards.*;
-
-
 import java.util.*;
-
-
 
 public class ComparatorOfCards implements Comparator<Card> {
 
@@ -36,8 +31,3 @@ public class ComparatorOfCards implements Comparator<Card> {
         return winnerList;
     }
 }
-    
-        
-    
-
- 

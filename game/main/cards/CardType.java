@@ -15,4 +15,8 @@ public enum CardType {
         this.parameteresFactor = arr;
         this.name = name;
     }
+
+    public String getName() {
+        return name;
+    }
 }

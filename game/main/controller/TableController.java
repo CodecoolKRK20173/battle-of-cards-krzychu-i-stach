@@ -9,7 +9,6 @@ public class TableController {
     
     private List<Player> listOfPlayers = new ArrayList<Player>();
     private Deck deck;
-
     private int kindOfTrump;
     private List<Card> cardInGame;
     private List<Card> listOfWinnerCards;
@@ -157,7 +156,6 @@ public class TableController {
             return true;
         }
         else return false;
-
     } 
 
 
@@ -284,4 +282,3 @@ public class TableController {
 
 
 }
-
