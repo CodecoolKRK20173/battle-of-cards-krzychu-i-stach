@@ -2,7 +2,7 @@ package main.cards;
 
 import java.util.Random;
 
-public class Card implements Comparable {
+public class Card implements Comparable<Card> {
 
     private int firstParameter;
     private int secondParameter;
@@ -64,14 +64,8 @@ public class Card implements Comparable {
         return getCardParameters;
     }
 
-    public int compareTo(Object otherCard) {
-        Card cardToCompare = (Card) otherCard;
-        if (this.trump == cardToCompare.getTrump())
-            return 0;
-        else if (this.trump < cardToCompare.getTrump())
-            return -1;
-        else 
-             return 1;
+    public int compareTo(Card otherCard) {
+        return this.getTrump() - otherCard.getTrump();
     }
 
     public int getTrump() {

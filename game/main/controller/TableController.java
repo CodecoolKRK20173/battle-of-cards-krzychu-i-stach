@@ -13,6 +13,7 @@ public class TableController {
     private int kindOfTrump;
     private Card[] cardInGame;
     private List<Card> listOfWinnerCards;
+    private List<Card> remainCards = new ArrayList<Card>();
   
     
     public void game() {
@@ -62,6 +63,7 @@ public class TableController {
         for (Player player : this.listOfPlayers) {
                 num ++;
                 System.out.println("karta playera :" + num);
+                System.out.println(player.getHand().getFirstCard().getName() + "imie");
                 System.out.println(player.getHand().getFirstCard().getTrump() + " traf sila");
             
 
@@ -132,5 +134,13 @@ public class TableController {
             card.setTrump(card.getParameter(this.kindOfTrump));
         }
     }
+
+    private boolean checkDraw() {
+        if (listOfWinnerCards.size() > 1) {
+            return true;
+        }
+        else return false;
+
+    } 
 }
 
