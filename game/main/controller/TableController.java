@@ -100,6 +100,16 @@ public class TableController {
         setKindOfTrump();
         setArrayOfCardsToCompare();
         this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardInGame);
+        if (checkDraw()) {
+
+            while(checkDraw()) {
+            setPlayerWhihStillInGame();
+            replaceCardsFromGameToRemainCards();
+            removeUsedCardsFromPlayers();
+            
+            }
+
+        }
 
 
     }
@@ -142,5 +152,41 @@ public class TableController {
         else return false;
 
     } 
+
+    private void removeUsedCardsFromPlayers() {
+        for (Player player : this.listOfPlayers) {
+            player.getHand().getHandContent().remove(0);
+        }
+    }
+
+    private void replaceCardsFromGameToRemainCards() {
+        int index = 0;
+        for (Card card : cardInGame) {
+                remainCards.add(card);
+                cardInGame[index] = null;
+                index++;
+            }
+    }
+
+    private void setPlayerWhihStillInGame() {
+
+        for (Player player : listOfPlayers) {
+            if (listOfWinnerCards.contains(player.getHand().getHandContent().get(0))){
+                player.setStillInGame(true);
+            }
+            else player.setStillInGame(false);
+        }
+    }
+
+    private void extraTimeBattle() {
+        for (Player player : listOfPlayers) {
+            if (player.getStillInGame()) {
+                
+            }
+        }
+    }
+    
+
+
 }
 

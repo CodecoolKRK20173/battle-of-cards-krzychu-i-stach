@@ -50,4 +50,12 @@ public class CPU extends Player {
     public boolean getTrumper() {
         return this.trumper;
     }
+
+    public void setStillInGame(boolean trueOrFalse) {
+        this.stillInGame = trueOrFalse;
+    }
+
+    public boolean getStillInGame() {
+        return this.stillInGame;
+    }
 }   
