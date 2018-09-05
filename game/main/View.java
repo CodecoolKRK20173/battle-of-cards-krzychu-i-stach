@@ -90,7 +90,7 @@ public class View {
         printLine(Position.BOTTOM, CARD_WIDTH);
     }
 
-    public void sayMessage(Message message) {
+    public void printMessage(Message message) {
         System.out.println(message.getMessage());
     }
 
