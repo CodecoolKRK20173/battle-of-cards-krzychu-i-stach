@@ -29,6 +29,20 @@ public class View {
         }
     }
 
+    private enum Message {
+        ASK_FOR_PARAMETER("Give parameter");
+
+        String message;
+
+        private Message(String message) {
+            this.message = message;
+        }
+
+        private String getMessage() {
+            return message;
+        }
+    }
+
     private String centerString(String string, Integer widthGoal) {
         StringBuilder centeredString = new StringBuilder();
         int stringLenght = string.length();
@@ -74,5 +88,19 @@ public class View {
             printLine(Position.MIDDLE, CARD_WIDTH);
         }
         printLine(Position.BOTTOM, CARD_WIDTH);
+    }
+
+    public void sayMessage(Message message) {
+        System.out.println(message.getMessage());
+    }
+
+    public void printMainMenu() {
+        String[] mainMenu = {"Play", "How to Play", "Exit"};
+        String gameTitle = "BATTLE OF CARDS";
+
+        System.out.printf("%s\n", gameTitle);
+        for (int i=0; i<mainMenu.length; i++) {
+            System.out.printf("\t%d) %s\n", i+1, mainMenu[i]);
+        }
     }
 }

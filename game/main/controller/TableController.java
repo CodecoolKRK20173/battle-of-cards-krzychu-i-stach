@@ -51,7 +51,6 @@ public class TableController {
         for (Card card : this.listOfWinnerCards) {
             System.out.println(card.getName());
         }
-
         //try to impement turn
 
         int num = 0;
@@ -90,8 +89,6 @@ public class TableController {
         setKindOfTrump();
         setArrayOfCardsToCompare();
         this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardInGame);
-
-
     }
 
     private void setTrumper(int numOfPlayer) {
@@ -130,7 +127,5 @@ public class TableController {
             return true;
         }
         else return false;
-
     } 
 }
-
