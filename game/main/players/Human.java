@@ -13,6 +13,7 @@ public class Human extends Player {
         this.name = name;
         this.hand = new Hand();
         this.trumper = false;
+        this.stillInGame = false;
     }
 
     public Hand getHand() {
@@ -57,5 +58,9 @@ public class Human extends Player {
 
     public boolean getStillInGame() {
         return this.stillInGame;
+    }
+
+    public void setTrumperOnFalse() {
+        this.trumper = false;
     }
 }

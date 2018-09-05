@@ -23,27 +23,17 @@ public class ComparatorOfCards implements Comparator<Card> {
     }
 
     
-    public List<Card> getWinnerCardsList(Card[] cards) {
+    public List<Card> getWinnerCardsList(List<Card> cards) {
         List<Card> winnerList = new ArrayList<Card>();
-        List<Card> sortedCards = convertArrayOfCardsForSortedList(cards);
-        Card highestCard = sortedCards.get(sortedCards.size()-1);
+        Collections.sort(cards, this);
+        Card highestCard = cards.get(cards.size()-1);
     
-        for (Card card : sortedCards) {
+        for (Card card : cards) {
             if (this.compare(card, highestCard) == 0) {
                 winnerList.add(card);
             }
         }
         return winnerList;
-    }
-
-
-    private List<Card> convertArrayOfCardsForSortedList(Card[] cards) {
-        List<Card> sortedCards = new ArrayList<Card>();
-        for (Card card : cards) {
-            sortedCards.add(card);
-        }
-        Collections.sort(sortedCards, this);
-        return sortedCards;
     }
 }
     

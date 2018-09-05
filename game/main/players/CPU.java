@@ -11,6 +11,7 @@ public class CPU extends Player {
     public CPU() {
         this.hand = new Hand();
         this.trumper = false;
+        this.stillInGame = false;
     }
 
     public CPU(String name) {
@@ -57,5 +58,9 @@ public class CPU extends Player {
 
     public boolean getStillInGame() {
         return this.stillInGame;
+    }
+
+    public void setTrumperOnFalse() {
+        this.trumper = false;
     }
 }   

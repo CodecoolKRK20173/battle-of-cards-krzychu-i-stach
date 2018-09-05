@@ -17,6 +17,8 @@ public abstract class Player {
 
     public abstract void setTrumperOnTrue();
 
+    public abstract void setTrumperOnFalse();
+
     public abstract boolean getStillInGame();
 
     public abstract void setStillInGame(boolean type);

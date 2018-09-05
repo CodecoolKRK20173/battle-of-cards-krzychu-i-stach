@@ -11,7 +11,7 @@ public class TableController {
     private Deck deck;
 
     private int kindOfTrump;
-    private Card[] cardInGame;
+    private List<Card> cardInGame;
     private List<Card> listOfWinnerCards;
     private List<Card> remainCards = new ArrayList<Card>();
   
@@ -19,7 +19,7 @@ public class TableController {
     public void game() {
         this.deck = new Deck();
         createPlayers(4);
-        this.cardInGame = new Card[4];
+        this.cardInGame = new ArrayList<Card>();
         dealCards();
         // for (int i = 0; i < deck.getDeck().size(); i++ ){
         //     System.out.println(deck.getDeck().get(i).getName());
@@ -44,39 +44,22 @@ public class TableController {
         // }
 
         /// dealed car printing
-
-       
-        
-        
-        
+ 
         ComparatorOfCards comparator = new ComparatorOfCards();
-        setTrumper(1);
-        turn(comparator);
-        
-        for (Card card : this.listOfWinnerCards) {
-            System.out.println(card.getName());
+        setTrumper(0);
+
+        while(!checkWinner()) {
+            turn(comparator);
         }
-
-        //try to impement turn
-
-        int num = 0;
-        for (Player player : this.listOfPlayers) {
-                num ++;
-                System.out.println("karta playera :" + num);
-                System.out.println(player.getHand().getFirstCard().getName() + "imie");
-                System.out.println(player.getHand().getFirstCard().getTrump() + " traf sila");
-            
-
-                }
-            
-        /// print first card of all players
-        
-
+        getWinner();
     }
 
     private void createPlayers(int numOfPlayers) {
+        int playerNumber = 1;
         for (int i = 0; i < numOfPlayers; i ++) {
-            listOfPlayers.add(new CPU());
+            String name = "Player " + String.valueOf(playerNumber);
+            listOfPlayers.add(new CPU(name));
+            playerNumber++;
         }
     }
 
@@ -97,53 +80,77 @@ public class TableController {
     }
 
     private void turn(ComparatorOfCards comparator) {
-        setKindOfTrump();
-        setArrayOfCardsToCompare();
+        setKindOfTrumpAndCreateCardInGameList();
         this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardInGame);
+        printView(); // help method
+        int levelOfExtraTime = 1;
+        
         if (checkDraw()) {
 
             while(checkDraw()) {
             setPlayerWhihStillInGame();
-            replaceCardsFromGameToRemainCards();
-            removeUsedCardsFromPlayers();
             
-            }
+            replaceCardsFromGameToRemainCards();
 
+            if (levelOfExtraTime <= 1) {
+                removeUsedCardsFromPlayers();
+            }
+            else {
+                removeUsedCardsFromPlayersInExtraTime();
+            }
+            listOfWinnerCards.clear();
+
+            extraTimeBattle();
+            this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardInGame);
+            levelOfExtraTime ++;
+            printView();  // help method
+            }
         }
 
+        else {
+            replaceCardsFromGameToRemainCards();
+            summaryResultOfBattle();
 
+            if (levelOfExtraTime <= 1) {
+                removeUsedCardsFromPlayers();
+            }
+            else {
+                removeUsedCardsFromPlayersInExtraTime();
+            }
+            setAllPlayerWhihStillInGameOnFalse();
+            
+        }
+       
     }
+
 
     private void setTrumper(int numOfPlayer) {
-        this.listOfPlayers.get(numOfPlayer - 1).setTrumperOnTrue();
+        this.listOfPlayers.get(numOfPlayer).setTrumperOnTrue();
     }
 
-    private void setKindOfTrump() {
+
+    private void setKindOfTrumpAndCreateCardInGameList() {
         for (Player player : this.listOfPlayers) {
             if (player.getTrumper()) {
                 Card topCard = player.getHand().getFirstCard();
                 this.kindOfTrump = player.chooseParameter(topCard);
-                this.cardInGame[0] = topCard;
+                this.cardInGame.add(topCard);
             }
-        }
-    }
-
-    private void setArrayOfCardsToCompare() {
-        int indexOfCardInGame = 1;
-        for (Player player : listOfPlayers) {
-            if (!player.getTrumper()) {
-                this.cardInGame[indexOfCardInGame] = player.getHand().getFirstCard();
-                indexOfCardInGame ++;
+            else {
+                this.cardInGame.add(player.getHand().getFirstCard());
             }
         }
         setTrumpInCards();
     }
+
+
 
     private void setTrumpInCards() {
         for (Card card : cardInGame) {
             card.setTrump(card.getParameter(this.kindOfTrump));
         }
     }
+
 
     private boolean checkDraw() {
         if (listOfWinnerCards.size() > 1) {
@@ -153,39 +160,127 @@ public class TableController {
 
     } 
 
+
     private void removeUsedCardsFromPlayers() {
         for (Player player : this.listOfPlayers) {
             player.getHand().getHandContent().remove(0);
         }
     }
 
-    private void replaceCardsFromGameToRemainCards() {
-        int index = 0;
-        for (Card card : cardInGame) {
-                remainCards.add(card);
-                cardInGame[index] = null;
-                index++;
+    private void removeUsedCardsFromPlayersInExtraTime() {
+        for (Player player : this.listOfPlayers) {
+            if (player.getStillInGame()) {
+                player.getHand().getHandContent().remove(0);
             }
+        }
     }
+
+
+    private void replaceCardsFromGameToRemainCards() {
+        
+        Iterator<Card> iter = cardInGame.iterator();
+        while(iter.hasNext()) {
+            remainCards.add(iter.next());
+            iter.remove();
+        }
+    }
+
 
     private void setPlayerWhihStillInGame() {
 
         for (Player player : listOfPlayers) {
-            if (listOfWinnerCards.contains(player.getHand().getHandContent().get(0))){
+            if (listOfWinnerCards.contains(player.getHand().getFirstCard())){
                 player.setStillInGame(true);
             }
             else player.setStillInGame(false);
         }
     }
 
+
     private void extraTimeBattle() {
+        System.out.println("Weszlo do extratime");
         for (Player player : listOfPlayers) {
             if (player.getStillInGame()) {
-                
+                this.cardInGame.add(player.getHand().getFirstCard());
             }
+        }
+        setTrumpInCards();
+    }
+
+
+    private void setAllPlayerWhihStillInGameOnFalse() {
+        for (Player player : listOfPlayers) {
+            player.setStillInGame(false);
         }
     }
     
+
+    private void summaryResultOfBattle() {
+        for (Player player : this.listOfPlayers) {
+            if (listOfWinnerCards.contains(player.getHand().getFirstCard())) {
+                setAllPlayersTrumperOnFalse();
+                player.setTrumperOnTrue();
+                
+                for (Card card : remainCards) {
+                    player.getHand().getHandContent().add(card);
+                }
+            }
+        }
+    }
+
+    
+    private void setAllPlayersTrumperOnFalse() {
+        for (Player player: this.listOfPlayers) {
+            player.setTrumperOnFalse();
+        }
+    }
+
+
+    private boolean checkWinner() {
+        boolean gameStatus = false;
+        for (Player player : this.listOfPlayers) {
+            if (player.getHand().getHandContent().size() == 0) {
+                gameStatus = true;
+            }
+        }
+        return gameStatus;
+    }
+
+    private void getWinner() {
+        int numberOfWinnerCards = 0;
+        for (Player player : this.listOfPlayers) {
+            if (player.getHand().getHandContent().size() > numberOfWinnerCards) {
+                numberOfWinnerCards = player.getHand().getHandContent().size();
+            }
+        }
+        for (Player player : this.listOfPlayers) {
+            if (player.getHand().getHandContent().size() == numberOfWinnerCards) {
+                System.out.println(player.getName() + " is winner!!!");;
+            }
+        }
+    }
+
+
+
+    private void printView()  {  /// temporary method for view!
+        for (Card card : this.listOfWinnerCards) {
+            System.out.println(card.getName() + " zwycieska karta");
+        }
+
+        //print winner card
+
+        int num = 0;
+        for (Player player : this.listOfPlayers) {
+                num ++;
+                System.out.println("karta playera :" + num);
+                System.out.println(player.getHand().getFirstCard().getName() + "imie");
+                System.out.println(player.getHand().getFirstCard().getTrump() + " traf sila");
+            
+
+                }
+            
+        /// print first card of all players
+    }
 
 
 }
