@@ -1,10 +1,11 @@
-game/main/controller/TableController.java
-game/main/players/Player.java
 game/main/players/Hand.java
 game/main/players/Human.java
+game/main/players/Player.java
 game/main/players/CPU.java
 game/main/Application.java
-game/main/cards/Deck.java
-game/main/cards/CardType.java
-game/main/cards/ComparatorOfCards.java
 game/main/cards/Card.java
+game/main/cards/Deck.java
+game/main/cards/ComparatorOfCards.java
+game/main/cards/CardType.java
+game/main/controller/TableController.java
+game/main/View.java

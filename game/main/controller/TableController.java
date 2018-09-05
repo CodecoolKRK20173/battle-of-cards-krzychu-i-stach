@@ -9,7 +9,6 @@ public class TableController {
     
     private List<Player> listOfPlayers = new ArrayList<Player>();
     private Deck deck;
-
     private int kindOfTrump;
     private Card[] cardInGame;
     private List<Card> listOfWinnerCards;
@@ -44,10 +43,6 @@ public class TableController {
         // }
 
         /// dealed car printing
-
-       
-        
-        
         
         ComparatorOfCards comparator = new ComparatorOfCards();
         setTrumper(1);
@@ -65,13 +60,8 @@ public class TableController {
                 System.out.println("karta playera :" + num);
                 System.out.println(player.getHand().getFirstCard().getName() + "imie");
                 System.out.println(player.getHand().getFirstCard().getTrump() + " traf sila");
-            
-
                 }
-            
         /// print first card of all players
-        
-
     }
 
     private void createPlayers(int numOfPlayers) {

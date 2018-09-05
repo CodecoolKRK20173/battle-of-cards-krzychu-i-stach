@@ -1,12 +1,7 @@
 package main.cards;
 
-
 import main.cards.*;
-
-
 import java.util.*;
-
-
 
 public class ComparatorOfCards implements Comparator<Card> {
 
@@ -22,7 +17,6 @@ public class ComparatorOfCards implements Comparator<Card> {
         else return 1;
     }
 
-    
     public List<Card> getWinnerCardsList(Card[] cards) {
         List<Card> winnerList = new ArrayList<Card>();
         List<Card> sortedCards = convertArrayOfCardsForSortedList(cards);
@@ -36,7 +30,6 @@ public class ComparatorOfCards implements Comparator<Card> {
         return winnerList;
     }
 
-
     private List<Card> convertArrayOfCardsForSortedList(Card[] cards) {
         List<Card> sortedCards = new ArrayList<Card>();
         for (Card card : cards) {
@@ -46,8 +39,3 @@ public class ComparatorOfCards implements Comparator<Card> {
         return sortedCards;
     }
 }
-    
-        
-    
-
- 

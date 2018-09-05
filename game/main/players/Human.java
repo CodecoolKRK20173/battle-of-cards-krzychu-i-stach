@@ -8,6 +8,7 @@ public class Human extends Player {
     
     private Hand hand;
     private String name;
+    private boolean trumper;
 
     public Human(String name) {
         this.name = name;

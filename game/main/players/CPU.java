@@ -7,6 +7,7 @@ public class CPU extends Player {
 
     private Hand hand;
     private String name;
+    private boolean trumper;
 
     public CPU() {
         this.hand = new Hand();
@@ -28,7 +29,7 @@ public class CPU extends Player {
     }
 
     public int chooseParameter(Card topCard) {
-        int[] cardParametersValues = topCard.getCardParameters();
+        int[] cardParametersValues = topCard.getCardParametersValues();
         int highestValue = 0;
         int highestParameterIndex = 0;
         int parameterIndex = 0;
@@ -50,4 +51,4 @@ public class CPU extends Player {
     public boolean getTrumper() {
         return this.trumper;
     }
-}   
+}
