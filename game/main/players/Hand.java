@@ -19,7 +19,7 @@ public class Hand {
         return this.cardsInHand.get(0);
     }
 
-    public int amountOfCardsInHand() {
+    public int getAmountOfCardsInHand() {
         return cardsInHand.size();
     }
 }

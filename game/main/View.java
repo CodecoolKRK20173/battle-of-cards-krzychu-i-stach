@@ -1,6 +1,8 @@
 package main;
 
 import main.cards.*;
+import main.players.Player;
+
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Set;
@@ -29,8 +31,11 @@ public class View {
         }
     }
 
-    private enum Message {
-        ASK_FOR_PARAMETER("Give parameter");
+    public enum Message {
+        ASK_FOR_PARAMETER("GIVE PARAMETER"),
+        PLAYER_CARD("YOUR CARD"),
+        CPU_CARD("CPU CARD"),
+        DRAW("DRAW");
 
         String message;
 
@@ -101,5 +106,10 @@ public class View {
         for (int i=0; i<mainMenu.length; i++) {
             System.out.printf("\t%d) %s\n", i+1, mainMenu[i]);
         }
+    }
+
+    public void printWinner(Player winner) {
+        System.out.printf("% won!\n", winner);
+        System.out.printf("%s won with %d cards in his hand", winner, winner.getHand().getAmountOfCardsInHand());
     }
 }
