@@ -1,9 +1,6 @@
 package main.cards;
 
-import java.util.Random;
-import java.util.Set;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 public class Card implements Comparable<Card> {
 
@@ -46,7 +43,6 @@ public class Card implements Comparable<Card> {
     }
 
     public int getParameter(int index) {
-        index++;
         switch (index) {
             case 1:
                 return this.getFirstParameter();
@@ -71,8 +67,9 @@ public class Card implements Comparable<Card> {
         return cardParameters;
     }
     
-    public Set<String> getCardParameters() {
-        return cardParameters.keySet();
+    public String[] getCardParameters() {
+        String[] cardParameters = {"First Parameter", "Second Parameter", "Third Parameter", "Forth Parameter"};
+        return cardParameters;
     }
 
     public int[] getCardParametersValues() {

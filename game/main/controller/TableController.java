@@ -5,6 +5,7 @@ import main.players.*;
 import main.View;
 import main.View.Message;
 import main.cards.*;
+import java.util.concurrent.TimeUnit;
 
 
 public class TableController {
@@ -20,10 +21,10 @@ public class TableController {
     private Scanner scan;
   
     
-    public TableController() {
+    public TableController(View viewer) {
         this.deck = new Deck();
         this.cardsInGame = new ArrayList<Card>();
-        this.viewer = new View();
+        this.viewer = viewer;
         this.listOfPlayers = new ArrayList<Player>();
         this.remainCards = new ArrayList<Card>();
         this.scan = new Scanner(System.in);
@@ -31,26 +32,39 @@ public class TableController {
 
 
     public void game() {
-        createPlayers(4);
+        createPlayers(3);
         dealCards();
-        viewer.printMainMenu();
-        int chooice = scan.nextInt();
-        switch(chooice) {
-            case(1): 
-                ComparatorOfCards comparator = new ComparatorOfCards();
-                setTrumper(0);
-                winFlag = false;
-                while(!winFlag) {
-                    turn(comparator);
-                }
-                viewer.printWinner(getWinner());  // on/off print winner
-                // System.out.println("KOniec");
-                break;
-            case(2):
-                System.out.println("Press button from 1 to 4 ;-D");
-                break;
-            case(3):
-                break;
+        int choice = 0;
+        boolean gameIsRunning = true;
+
+        while(gameIsRunning) {
+            viewer.printMainMenu();
+            try {
+              choice = scan.nextInt();
+            } catch (InputMismatchException e) {
+                scan.nextLine();
+                continue;
+            }
+            switch(choice) {
+                case 1: 
+                    ComparatorOfCards comparator = new ComparatorOfCards();
+                    setTrumper(0);
+                    winFlag = false;
+                    while(!winFlag) {
+                        clearScreen();
+                        turn(comparator);
+                        clearScreen();
+                    }
+                    viewer.printWinner(getWinner());  // on/off print winner
+                    // System.out.println("KOniec");
+                    break;
+                case 2:
+                    System.out.println("Press button from 1 to 4 ;-D");
+                    break;
+                case 3:
+                    gameIsRunning = false;
+                    break;
+            }
         }
     }
 
@@ -58,7 +72,7 @@ public class TableController {
         int playerNumber = 1;
         // listOfPlayers.add(new Human("Stach"));  /// wl/wyl playera
         for (int i = 0; i < numOfPlayers; i ++) {
-            String name = "Boot nr. " + String.valueOf(playerNumber);
+            String name = "BOT nr. " + String.valueOf(playerNumber);
             listOfPlayers.add(new CPU(name));
             playerNumber++;
         }
@@ -81,54 +95,83 @@ public class TableController {
             return false;
     }
 
+    private void showPlayersCards() {
+        for (Player player : listOfPlayers) {
+            System.out.printf("%s has %d cards\n", player.getName(), player.getHand().getAmountOfCardsInHand());
+        }
+        System.out.println("");
+    }
+
+    private void showWhoIsTrumper() {
+        for (Player player : listOfPlayers) {
+            if (player.getTrumper())
+                System.out.printf("%s CHOSES A PARAMETER\n\n", player.getName());
+        }
+    }
+
     private void turn(ComparatorOfCards comparator) {
+        showPlayersCards();
+        showWhoIsTrumper();
+        delayPrintingBy(2);
         setKindOfTrumpAndCreateCardInGameList();
         this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardsInGame);
-        
-        if (checkDraw()) {
-
-            while(checkDraw()) {
-                setPlayerWhihStillInGame(); 
-                replaceCardsFromGameToRemainCards();
-                listOfWinnerCards.clear();
-                extraTimeBattle();
-                this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardsInGame);
-            }
-        }
-
+        while(checkDraw()) {
+            setPlayerWhihStillInGame(); 
             replaceCardsFromGameToRemainCards();
-            summaryResultOfBattle(); 
-            setAllPlayerWhihStillInGameOnFalse();
-        
+            listOfWinnerCards.clear();
+            extraTimeBattle();
+            this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardsInGame);
+        }
+        replaceCardsFromGameToRemainCards();
+        summaryResultOfBattle(); 
+        setAllPlayerWhihStillInGameOnFalse();
+
     }
 
     private void setTrumper(int numOfPlayer) {
         this.listOfPlayers.get(numOfPlayer).setTrumperOnTrue();
     }
 
+    private void delayPrintingBy(int seconds) {
+        try {
+            TimeUnit.SECONDS.sleep(seconds);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clearScreen() {  
+        System.out.print("\033[H\033[2J");  
+        System.out.flush();  
+    }  
+
     private void setKindOfTrumpAndCreateCardInGameList() {
         for (Player player : this.listOfPlayers) {
             if (player.getTrumper()) {
+                System.out.printf("%15s CARD\n", player.getName().toUpperCase());
                 player.setActuallyFirstCard(player.getHand().getFirstCard());
                 player.removeFirstCardOfPlayer();
-                System.out.println("Player name: " + player.getName()); /// helper
-                System.out.println("Ilość kart: " + player.getHand().getHandContent().size()); /// helper
-                if (player instanceof Human) {
-                    viewer.printCard(player.getActuallyFirstCard());
-                }
+                viewer.printCard(player.getActuallyFirstCard());
+                System.out.println("");
                 this.kindOfTrump = player.chooseParameter(player.getActuallyFirstCard());
+                delayPrintingBy(2);
+                System.out.printf("%s chose parameter number %d, of value %d\n\n",player.getName(), kindOfTrump, player.getActuallyFirstCard().getParameter(kindOfTrump));
                 this.cardsInGame.add(player.getActuallyFirstCard());
+                delayPrintingBy(2);
             }
             else {
                 if (player.getHand().getHandContent().size() > 0) {
+                    System.out.printf("%15s CARD\n", player.getName().toUpperCase());
                     player.setActuallyFirstCard(player.getHand().getFirstCard());
+                    viewer.printCard(player.getActuallyFirstCard());
+                    System.out.println("");
                     player.removeFirstCardOfPlayer();
-                    System.out.println("Player name: " + player.getName()); /// helper
-                    System.out.println("Ilość kart: " + player.getHand().getHandContent().size()); /// helper
                     this.cardsInGame.add(player.getActuallyFirstCard());
+                    delayPrintingBy(2);
                 }
             }
         }
+        delayPrintingBy(2);
         setTrumpInCards();
     }
 
@@ -172,7 +215,6 @@ public class TableController {
     private void extraTimeBattle() {
         viewer.printMessage(Message.DRAW);
         checkWinnerInExtraTime();
-        
             for (Player player : listOfPlayers) {
                 try {
                 player.setActuallyFirstCard(player.getHand().getFirstCard());
@@ -181,7 +223,7 @@ public class TableController {
                     viewer.printWinner(getWinner()); // bandycki numer
                 }
                 try {
-                player.removeFirstCardOfPlayer();
+                    player.removeFirstCardOfPlayer();
                 }
                 catch(IndexOutOfBoundsException e) {
                     viewer.printWinner(getWinner()); // bandycki numer
@@ -190,8 +232,7 @@ public class TableController {
                 try {
                     if (player.getStillInGame()) {
                         this.cardsInGame.add(playerFirstCard);
-                        if (player instanceof Human && player.getTrumper()) {
-                            
+                        if (player instanceof Human && player.getTrumper()) {    
                             viewer.printCard(playerFirstCard);
                             this.kindOfTrump = player.chooseParameter(playerFirstCard);
                             setTrumpInCards();
@@ -223,7 +264,8 @@ public class TableController {
             if (listOfWinnerCards.contains(player.getActuallyFirstCard())) {
                 setAllPlayersTrumperOnFalse();
                 player.setTrumperOnTrue();
-                
+                System.out.printf("%s WINS THE ROUND", player.getName().toUpperCase());
+                delayPrintingBy(5);
                 for (Card card : remainCards) {
                     player.getHand().getHandContent().add(card);
                 }

@@ -2,10 +2,7 @@ package main;
 
 import main.cards.*;
 import main.players.Player;
-
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 
 public class View {
 
@@ -81,15 +78,15 @@ public class View {
 
     public void printCard(Card card) {
         int CARD_WIDTH = 25;
-        Map<String, Integer> parametersMap = card.getCardParametersAndValues();
-        Set<String> parameters = card.getCardParameters();
-
+        String[] parameters = card.getCardParameters();
+        int index = 1;
         printLine(Position.TOP, CARD_WIDTH);
         System.out.printf("|%s|\n", centerString(card.getName(), CARD_WIDTH));
         printLine(Position.MIDDLE, CARD_WIDTH);
         for (String parameter : parameters) {
-            parameter = String.format("%s - %d", parameter, parametersMap.get(parameter));
+            parameter = String.format("%s - %d", parameter, card.getParameter(index));
             System.out.println("|" + centerString(parameter, CARD_WIDTH) + "|");
+            index++;
         }
         printLine(Position.BOTTOM, CARD_WIDTH);
     }
@@ -110,6 +107,6 @@ public class View {
 
     public void printWinner(Player winner) {
         System.out.printf("%s won!\n", winner.getName());
-        System.out.printf("%s won with %d cards in his hand", winner.getName(), winner.getHand().getAmountOfCardsInHand());
+        System.out.printf("%s won with %d cards in his hand\n", winner.getName(), winner.getHand().getAmountOfCardsInHand());
     }
 }
