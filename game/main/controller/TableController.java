@@ -31,7 +31,7 @@ public class TableController {
 
 
     public void game() {
-        createPlayers(2);
+        createPlayers(4);
         dealCards();
         viewer.printMainMenu();
         int chooice = scan.nextInt();
@@ -43,7 +43,8 @@ public class TableController {
                 while(!winFlag) {
                     turn(comparator);
                 }
-                viewer.printWinner(getWinner());
+                viewer.printWinner(getWinner());  // on/off print winner
+                // System.out.println("KOniec");
                 break;
             case(2):
                 System.out.println("Press button from 1 to 4 ;-D");
@@ -55,12 +56,13 @@ public class TableController {
 
     private void createPlayers(int numOfPlayers) {
         int playerNumber = 1;
+        // listOfPlayers.add(new Human("Stach"));  /// wl/wyl playera
         for (int i = 0; i < numOfPlayers; i ++) {
-            String name = "Player " + String.valueOf(playerNumber);
+            String name = "Boot nr. " + String.valueOf(playerNumber);
             listOfPlayers.add(new CPU(name));
             playerNumber++;
         }
-        // listOfPlayers.add(new Human("Stach"));
+        
     }
 
     private void dealCards() {
@@ -94,11 +96,10 @@ public class TableController {
             }
         }
 
-        else {
             replaceCardsFromGameToRemainCards();
             summaryResultOfBattle(); 
             setAllPlayerWhihStillInGameOnFalse();
-        }
+        
     }
 
     private void setTrumper(int numOfPlayer) {
@@ -110,6 +111,8 @@ public class TableController {
             if (player.getTrumper()) {
                 player.setActuallyFirstCard(player.getHand().getFirstCard());
                 player.removeFirstCardOfPlayer();
+                System.out.println("Player name: " + player.getName()); /// helper
+                System.out.println("Ilość kart: " + player.getHand().getHandContent().size()); /// helper
                 if (player instanceof Human) {
                     viewer.printCard(player.getActuallyFirstCard());
                 }
@@ -120,6 +123,8 @@ public class TableController {
                 if (player.getHand().getHandContent().size() > 0) {
                     player.setActuallyFirstCard(player.getHand().getFirstCard());
                     player.removeFirstCardOfPlayer();
+                    System.out.println("Player name: " + player.getName()); /// helper
+                    System.out.println("Ilość kart: " + player.getHand().getHandContent().size()); /// helper
                     this.cardsInGame.add(player.getActuallyFirstCard());
                 }
             }
@@ -169,8 +174,18 @@ public class TableController {
         checkWinnerInExtraTime();
         
             for (Player player : listOfPlayers) {
+                try {
                 player.setActuallyFirstCard(player.getHand().getFirstCard());
+                } 
+                catch(IndexOutOfBoundsException e) {
+                    viewer.printWinner(getWinner()); // bandycki numer
+                }
+                try {
                 player.removeFirstCardOfPlayer();
+                }
+                catch(IndexOutOfBoundsException e) {
+                    viewer.printWinner(getWinner()); // bandycki numer
+                }
                 Card playerFirstCard = player.getActuallyFirstCard();
                 try {
                     if (player.getStillInGame()) {
@@ -212,6 +227,8 @@ public class TableController {
                 for (Card card : remainCards) {
                     player.getHand().getHandContent().add(card);
                 }
+                remainCards.clear();
+                this.winFlag = checkWinner();
             }
         }
     }

@@ -109,7 +109,7 @@ public class View {
     }
 
     public void printWinner(Player winner) {
-        System.out.printf("% won!\n", winner);
-        System.out.printf("%s won with %d cards in his hand", winner, winner.getHand().getAmountOfCardsInHand());
+        System.out.printf("%s won!\n", winner.getName());
+        System.out.printf("%s won with %d cards in his hand", winner.getName(), winner.getHand().getAmountOfCardsInHand());
     }
 }
