@@ -2,6 +2,7 @@ package main.controller;
 
 import java.util.*;
 import main.players.*;
+import main.View;
 import main.cards.*;
 
 
@@ -13,13 +14,37 @@ public class TableController {
     private List<Card> cardInGame;
     private List<Card> listOfWinnerCards;
     private List<Card> remainCards = new ArrayList<Card>();
+    private boolean winFlag;
+    private View viewer;
   
     
     public void game() {
         this.deck = new Deck();
-        createPlayers(4);
+        createPlayers(1);
         this.cardInGame = new ArrayList<Card>();
         dealCards();
+        this.viewer = new View();
+        viewer.printMainMenu();
+        Scanner scan = new Scanner(System.in);
+        int chooice = scan.nextInt();
+        switch(chooice) {
+            case(1): 
+            ComparatorOfCards comparator = new ComparatorOfCards();
+            setTrumper(0);
+            winFlag = false;
+
+            while(!winFlag) {
+
+                turn(comparator);
+            }
+            getWinner();
+            break;
+
+
+            case(2):
+
+            case(3):
+        }
         // for (int i = 0; i < deck.getDeck().size(); i++ ){
         //     System.out.println(deck.getDeck().get(i).getName());
         //     System.out.println(deck.getDeck().get(i).getFirstParameter());
@@ -44,13 +69,8 @@ public class TableController {
 
         /// dealed car printing
  
-        ComparatorOfCards comparator = new ComparatorOfCards();
-        setTrumper(0);
-
-        while(!checkWinner()) {
-            turn(comparator);
-        }
-        getWinner();
+        
+        
     }
 
     private void createPlayers(int numOfPlayers) {
@@ -60,6 +80,7 @@ public class TableController {
             listOfPlayers.add(new CPU(name));
             playerNumber++;
         }
+        listOfPlayers.add(new Human("Stach"));
     }
 
     private void dealCards() {
@@ -81,28 +102,30 @@ public class TableController {
     private void turn(ComparatorOfCards comparator) {
         setKindOfTrumpAndCreateCardInGameList();
         this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardInGame);
-        printView(); // help method
+        // printView(); // help method
         int levelOfExtraTime = 1;
         
         if (checkDraw()) {
 
+           
+
             while(checkDraw()) {
-            setPlayerWhihStillInGame();
-            
-            replaceCardsFromGameToRemainCards();
+                setPlayerWhihStillInGame();
+                
+                replaceCardsFromGameToRemainCards();
 
-            if (levelOfExtraTime <= 1) {
-                removeUsedCardsFromPlayers();
-            }
-            else {
-                removeUsedCardsFromPlayersInExtraTime();
-            }
-            listOfWinnerCards.clear();
+                if (levelOfExtraTime <= 1) {
+                    removeUsedCardsFromPlayers();
+                }
+                else {
+                    removeUsedCardsFromPlayersInExtraTime();
+                }
+                listOfWinnerCards.clear();
 
-            extraTimeBattle();
-            this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardInGame);
-            levelOfExtraTime ++;
-            printView();  // help method
+                extraTimeBattle();
+                this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardInGame);
+                levelOfExtraTime ++;
+                // printView();  // help method
             }
         }
 
@@ -132,11 +155,16 @@ public class TableController {
         for (Player player : this.listOfPlayers) {
             if (player.getTrumper()) {
                 Card topCard = player.getHand().getFirstCard();
+                if (player instanceof Human) {
+                    viewer.printCard(topCard);
+                }
                 this.kindOfTrump = player.chooseParameter(topCard);
                 this.cardInGame.add(topCard);
             }
             else {
-                this.cardInGame.add(player.getHand().getFirstCard());
+                if (player.getHand().getHandContent().size() > 0) {
+                    this.cardInGame.add(player.getHand().getFirstCard());
+                }
             }
         }
         setTrumpInCards();
@@ -160,15 +188,25 @@ public class TableController {
 
 
     private void removeUsedCardsFromPlayers() {
-        for (Player player : this.listOfPlayers) {
-            player.getHand().getHandContent().remove(0);
+        try {
+            for (Player player : this.listOfPlayers) {
+                player.getHand().getHandContent().remove(0);
+            }
+        }
+        catch(IndexOutOfBoundsException io) {
+            
         }
     }
 
     private void removeUsedCardsFromPlayersInExtraTime() {
         for (Player player : this.listOfPlayers) {
             if (player.getStillInGame()) {
-                player.getHand().getHandContent().remove(0);
+                try {
+                    player.getHand().getHandContent().remove(0);
+                }
+                catch(IndexOutOfBoundsException io) {
+
+                }
             }
         }
     }
@@ -187,22 +225,50 @@ public class TableController {
     private void setPlayerWhihStillInGame() {
 
         for (Player player : listOfPlayers) {
-            if (listOfWinnerCards.contains(player.getHand().getFirstCard())){
-                player.setStillInGame(true);
+            try {
+                if (listOfWinnerCards.contains(player.getHand().getFirstCard())){
+                    player.setStillInGame(true);
+                }
+                else player.setStillInGame(false);
             }
-            else player.setStillInGame(false);
+            catch(IndexOutOfBoundsException ioobe) {
+                
+            }
+            
         }
     }
 
 
     private void extraTimeBattle() {
         System.out.println("Weszlo do extratime");
-        for (Player player : listOfPlayers) {
-            if (player.getStillInGame()) {
-                this.cardInGame.add(player.getHand().getFirstCard());
+        checkWinnerInExtraTime();
+        
+            for (Player player : listOfPlayers) {
+                try {
+                    if (player.getStillInGame()) {
+                        this.cardInGame.add(player.getHand().getFirstCard());
+                        if (player instanceof Human && player.getTrumper()) {
+                            viewer.printCard(player.getHand().getFirstCard());
+                        }
+                    }
+                }
+            
+            catch(IndexOutOfBoundsException iobe) {
+                
+                break;
+                
             }
+            setTrumpInCards();
         }
-        setTrumpInCards();
+    }
+        
+    
+
+
+    private void checkWinnerInExtraTime() {
+        if(checkWinner()) {
+            winFlag = true;
+        }
     }
 
 
@@ -260,25 +326,25 @@ public class TableController {
 
 
 
-    private void printView()  {  /// temporary method for view!
-        for (Card card : this.listOfWinnerCards) {
-            System.out.println(card.getName() + " zwycieska karta");
-        }
+    // private void printView()  {  /// temporary method for view!
+    //     for (Card card : this.listOfWinnerCards) {
+    //         System.out.println(card.getName() + " zwycieska karta");
+    //     }
 
-        //print winner card
+    //     //print winner card
 
-        int num = 0;
-        for (Player player : this.listOfPlayers) {
-                num ++;
-                System.out.println("karta playera :" + num);
-                System.out.println(player.getHand().getFirstCard().getName() + "imie");
-                System.out.println(player.getHand().getFirstCard().getTrump() + " traf sila");
+    //     int num = 0;
+    //     for (Player player : this.listOfPlayers) {
+    //             num ++;
+    //             System.out.println("karta playera :" + num);
+    //             System.out.println(player.getHand().getFirstCard().getName() + "imie");
+    //             System.out.println(player.getHand().getFirstCard().getTrump() + " traf sila");
             
 
-                }
+    //             }
             
-        /// print first card of all players
-    }
+    //     /// print first card of all players
+    // }
 
 
 }

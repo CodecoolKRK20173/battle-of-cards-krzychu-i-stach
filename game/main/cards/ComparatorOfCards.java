@@ -21,11 +21,13 @@ public class ComparatorOfCards implements Comparator<Card> {
     public List<Card> getWinnerCardsList(List<Card> cards) {
         List<Card> winnerList = new ArrayList<Card>();
         Collections.sort(cards, this);
-        Card highestCard = cards.get(cards.size()-1);
-    
-        for (Card card : cards) {
-            if (this.compare(card, highestCard) == 0) {
-                winnerList.add(card);
+        if (cards.size() > 0) {
+            Card highestCard = cards.get(cards.size()-1);
+        
+            for (Card card : cards) {
+                if (this.compare(card, highestCard) == 0) {
+                    winnerList.add(card);
+                }
             }
         }
         return winnerList;

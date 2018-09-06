@@ -37,10 +37,12 @@ public class Human extends Player {
                 scanner.nextLine();
                 continue;
             }
-            if (userOption > 4 || userOption <1) {
+            if (userOption > 4 || userOption < 1) {
                 scanner.nextLine();
                 continue;
             }
+        scanner.nextLine();
+        choosingParameter = false;
         }  
         return userOption;   
     }

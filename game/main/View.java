@@ -55,13 +55,13 @@ public class View {
         margin /= 2;
 
         for (int i=0; i < margin; i++) {
-            centeredString.append("\\s");
+            centeredString.append(" ");
         }
 
         centeredString.append(string);
 
         for (int i=0; i < margin+additionalMargin; i++) {
-            centeredString.append("\\s");
+            centeredString.append(" ");
         }
         return centeredString.toString();
     }
@@ -69,23 +69,22 @@ public class View {
     private void printLine(Position position, int cardWidth) {
         System.out.print(position.getLeftMark());
         for (int i=0; i<cardWidth; i++) {
-            System.out.print("[-]");
-            System.out.println(position.getRightMark());
+            System.out.print("-");
         }
+        System.out.println(position.getRightMark());
     }
 
     public void printCard(Card card) {
-        int CARD_WIDTH = 20;
+        int CARD_WIDTH = 25;
         Map<String, Integer> parametersMap = card.getCardParametersAndValues();
         Set<String> parameters = card.getCardParameters();
 
         printLine(Position.TOP, CARD_WIDTH);
-        System.out.printf("|%s|", centerString(card.getName(), CARD_WIDTH));
+        System.out.printf("|%s|\n", centerString(card.getName(), CARD_WIDTH));
         printLine(Position.MIDDLE, CARD_WIDTH);
         for (String parameter : parameters) {
-            parameter = String.format("|%s - %d|", parameter, parametersMap.get(parameter));
-            System.out.println(centerString(parameter, CARD_WIDTH));
-            printLine(Position.MIDDLE, CARD_WIDTH);
+            parameter = String.format("%s - %d", parameter, parametersMap.get(parameter));
+            System.out.println("|" + centerString(parameter, CARD_WIDTH) + "|");
         }
         printLine(Position.BOTTOM, CARD_WIDTH);
     }
