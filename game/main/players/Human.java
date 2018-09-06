@@ -66,4 +66,6 @@ public class Human extends Player {
     public void setTrumperOnFalse() {
         this.trumper = false;
     }
+
+    
 }

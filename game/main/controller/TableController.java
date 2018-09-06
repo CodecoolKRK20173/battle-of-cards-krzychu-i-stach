@@ -42,7 +42,7 @@ public class TableController {
 
 
             case(2):
-
+                System.out.println("Press button from 1 to 4 ;-D");
             case(3):
         }
         // for (int i = 0; i < deck.getDeck().size(); i++ ){
@@ -103,7 +103,7 @@ public class TableController {
         setKindOfTrumpAndCreateCardInGameList();
         this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardInGame);
         // printView(); // help method
-        int levelOfExtraTime = 1;
+        // int levelOfExtraTime = 0;
         
         if (checkDraw()) {
 
@@ -114,31 +114,34 @@ public class TableController {
                 
                 replaceCardsFromGameToRemainCards();
 
-                if (levelOfExtraTime <= 1) {
-                    removeUsedCardsFromPlayers();
-                }
-                else {
-                    removeUsedCardsFromPlayersInExtraTime();
-                }
+                // if (levelOfExtraTime <= 1) {
+                //     removeUsedCardsFromPlayers();
+                // }
+                // else {
+                //     removeUsedCardsFromPlayersInExtraTime();
+                // }
                 listOfWinnerCards.clear();
 
                 extraTimeBattle();
                 this.listOfWinnerCards = comparator.getWinnerCardsList(this.cardInGame);
-                levelOfExtraTime ++;
+                // levelOfExtraTime ++;
+                // if (checkDraw()){
+                //     removeUsedCardsFromPlayersInExtraTime();
+                // }
                 // printView();  // help method
             }
         }
 
         else {
             replaceCardsFromGameToRemainCards();
-            summaryResultOfBattle();
+            summaryResultOfBattle();      ///////// ttuuuuu
 
-            if (levelOfExtraTime <= 1) {
-                removeUsedCardsFromPlayers();
-            }
-            else {
-                removeUsedCardsFromPlayersInExtraTime();
-            }
+            // if (levelOfExtraTime <= 1) {
+            //     removeUsedCardsFromPlayers();
+            // }
+            // else {
+            //     removeUsedCardsFromPlayersInExtraTime();
+            // }
             setAllPlayerWhihStillInGameOnFalse();
             
         }
@@ -154,16 +157,19 @@ public class TableController {
     private void setKindOfTrumpAndCreateCardInGameList() {
         for (Player player : this.listOfPlayers) {
             if (player.getTrumper()) {
-                Card topCard = player.getHand().getFirstCard();
+                player.setActuallyFirstCard(player.getHand().getFirstCard());
+                player.removeFirstCardOfPlayer();
                 if (player instanceof Human) {
-                    viewer.printCard(topCard);
+                    viewer.printCard(player.getActuallyFirstCard());
                 }
-                this.kindOfTrump = player.chooseParameter(topCard);
-                this.cardInGame.add(topCard);
+                this.kindOfTrump = player.chooseParameter(player.getActuallyFirstCard());
+                this.cardInGame.add(player.getActuallyFirstCard());
             }
             else {
                 if (player.getHand().getHandContent().size() > 0) {
-                    this.cardInGame.add(player.getHand().getFirstCard());
+                    player.setActuallyFirstCard(player.getHand().getFirstCard());
+                    player.removeFirstCardOfPlayer();
+                    this.cardInGame.add(player.getActuallyFirstCard());
                 }
             }
         }
@@ -202,7 +208,7 @@ public class TableController {
         for (Player player : this.listOfPlayers) {
             if (player.getStillInGame()) {
                 try {
-                    player.getHand().getHandContent().remove(0);
+                    player.removeFirstCardOfPlayer();
                 }
                 catch(IndexOutOfBoundsException io) {
 
@@ -210,6 +216,8 @@ public class TableController {
             }
         }
     }
+
+    
 
 
     private void replaceCardsFromGameToRemainCards() {
@@ -226,7 +234,7 @@ public class TableController {
 
         for (Player player : listOfPlayers) {
             try {
-                if (listOfWinnerCards.contains(player.getHand().getFirstCard())){
+                if (listOfWinnerCards.contains(player.getActuallyFirstCard())) {
                     player.setStillInGame(true);
                 }
                 else player.setStillInGame(false);
@@ -244,11 +252,17 @@ public class TableController {
         checkWinnerInExtraTime();
         
             for (Player player : listOfPlayers) {
+                player.setActuallyFirstCard(player.getHand().getFirstCard());
+                player.removeFirstCardOfPlayer();
+                Card playerFirstCard = player.getActuallyFirstCard();
                 try {
                     if (player.getStillInGame()) {
-                        this.cardInGame.add(player.getHand().getFirstCard());
+                        this.cardInGame.add(playerFirstCard);
                         if (player instanceof Human && player.getTrumper()) {
-                            viewer.printCard(player.getHand().getFirstCard());
+                            
+                            viewer.printCard(playerFirstCard);
+                            this.kindOfTrump = player.chooseParameter(playerFirstCard);
+                            setTrumpInCards();
                         }
                     }
                 }
@@ -281,7 +295,7 @@ public class TableController {
 
     private void summaryResultOfBattle() {
         for (Player player : this.listOfPlayers) {
-            if (listOfWinnerCards.contains(player.getHand().getFirstCard())) {
+            if (listOfWinnerCards.contains(player.getActuallyFirstCard())) {
                 setAllPlayersTrumperOnFalse();
                 player.setTrumperOnTrue();
                 
