@@ -68,7 +68,7 @@ public class Card implements Comparable<Card> {
     }
     
     public String[] getCardParameters() {
-        String[] cardParameters = {"First Parameter", "Second Parameter", "Third Parameter", "Forth Parameter"};
+        String[] cardParameters = {"Old Woman", "Janusz and Grazyna", "Crazy People", "Hooligans"};
         return cardParameters;
     }
 

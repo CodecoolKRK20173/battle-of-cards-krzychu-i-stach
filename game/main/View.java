@@ -97,7 +97,7 @@ public class View {
 
     public void printMainMenu() {
         String[] mainMenu = {"Play", "How to Play", "Exit"};
-        String gameTitle = "BATTLE OF CARDS";
+        String gameTitle = "BATTLE OF PKS";
 
         System.out.printf("%s\n", gameTitle);
         for (int i=0; i<mainMenu.length; i++) {
@@ -108,5 +108,10 @@ public class View {
     public void printWinner(Player winner) {
         System.out.printf("%s won!\n", winner.getName());
         System.out.printf("%s won with %d cards in his hand\n", winner.getName(), winner.getHand().getAmountOfCardsInHand());
+    }
+
+    public void printGameRules() {
+        System.out.println("All the cards are dealt among the players. There must be at least two players, and at least one card for each player. The starting player (normally the player sitting on the dealer's left) selects a category from his or her topmost card and reads out its value. Each other player then reads out the value of the same category from their cards. The best (usually the largest) value wins the \"trick\", and the winner takes all the cards of the trick and places them at the bottom of his or her pile. That player then looks at their new topmost card, and chooses the category for the next round. Ace introduced the Super Trump, a card that beats all other cards except “A” cards regardless of its data.In the event of a draw, the cards are placed in the centre and a new category is chosen from the next card by the same person as in the previous round. The winner of that round obtains all of the cards in the centre as well as the top card from each player.The game ends when one player has won all of the card off the other players.\n");
+
     }
 }

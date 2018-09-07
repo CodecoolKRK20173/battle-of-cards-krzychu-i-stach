@@ -2,10 +2,10 @@ package main.cards;
 
 public enum CardType {
         
-    TYPE1(new int[] {6,1,1,1}, "Type1"),
-    TYPE2(new int[] {1,6,1,1}, "Type2"),
-    TYPE3(new int[] {1,1,6,1}, "Type3"),
-    TYPE4(new int[] {1,1,1,6}, "Type4");
+    TYPE1(new int[] {6,1,1,1}, "PKS Torun"),
+    TYPE2(new int[] {1,6,1,1}, "PKS Leba"),
+    TYPE3(new int[] {1,1,6,1}, "PKS Tworki"),
+    TYPE4(new int[] {1,1,1,6}, "PKS Widzew Stadium");
     // parameters of cards configuration
 
     int[] parameteresFactor;

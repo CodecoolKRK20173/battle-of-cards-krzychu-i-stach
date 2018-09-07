@@ -55,11 +55,11 @@ public class TableController {
                         turn(comparator);
                         clearScreen();
                     }
-                    viewer.printWinner(getWinner());  // on/off print winner
-                    // System.out.println("KOniec");
+                    viewer.printWinner(getWinner());  
+                   
                     break;
                 case 2:
-                    System.out.println("Press button from 1 to 4 ;-D");
+                    viewer.printGameRules();
                     break;
                 case 3:
                     gameIsRunning = false;
@@ -220,13 +220,13 @@ public class TableController {
                 player.setActuallyFirstCard(player.getHand().getFirstCard());
                 } 
                 catch(IndexOutOfBoundsException e) {
-                    viewer.printWinner(getWinner()); // bandycki numer
+                    viewer.printWinner(getWinner()); 
                 }
                 try {
                     player.removeFirstCardOfPlayer();
                 }
                 catch(IndexOutOfBoundsException e) {
-                    viewer.printWinner(getWinner()); // bandycki numer
+                    viewer.printWinner(getWinner()); 
                 }
                 Card playerFirstCard = player.getActuallyFirstCard();
                 try {

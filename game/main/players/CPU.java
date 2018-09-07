@@ -41,7 +41,8 @@ public class CPU extends Player {
                 highestParameterIndex = parameterIndex;
                 parameterIndex++;
             }
-        }highestParameterIndex++;
+        }
+        highestParameterIndex++;
         return highestParameterIndex;
     }
 
